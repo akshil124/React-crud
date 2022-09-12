@@ -1,7 +1,7 @@
 import React from 'react'
 // import { Form } from './Form'
 function Table(props) {
-    // console.log("userssss",props.users);
+    console.log("userssss",props.users);
     const delet=(i) =>{
         console.log("index",i);
     }
