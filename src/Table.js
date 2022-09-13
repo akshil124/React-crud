@@ -1,14 +1,13 @@
 import React from 'react'
-// import { Form } from './Form'
+import "./table.css"
 function Table(props) {
-    console.log("userssss",props.users);
-    const delet=(i) =>{
-        console.log("index",i);
-    }
+    // console.log("userssss",props.users);
+    // let  tog = false
+   
         return (
         <>
-            <table border={1}>
-                <tr>
+            <table >
+                <tr className='table-tr'>
                     <th>name</th>
                     <th>email</th>
                     <th>password</th>
@@ -20,10 +19,11 @@ function Table(props) {
                     <th>gender</th>
                     <th>languages</th>
                     <th>delete</th>
+                    <th>edit</th>
                 </tr>
                 {props.users.map((l,i)=>{
                     return(
-                        <tr>
+                        <tr className='table-tr'>
                             <td>{l.name}</td>
                             <td>{l.email}</td>
                             <td>{l.password}</td>
@@ -33,8 +33,9 @@ function Table(props) {
                             <td>{l.color}</td>
                             <td>{l.post}</td>
                             <td>{l.gender}</td>
-                            <td>{l.languages},{l.languages1},{l.languages2}</td>
-                            <td><button type='button'  onClick={()=>delet(i)}>delete</button></td>
+                            <td>{l.languages.join(',')}</td>
+                            <td><button type='button' className='delete-btn'  onClick={()=>props.delet(i)}>delete</button></td>
+                            <td><button type='button' className='edit-btn' onClick={()=>props.edit(i)}>edit</button></td>
                         </tr>
                     );
                 })}

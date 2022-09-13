@@ -1,58 +1,69 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
+import Crudform from './crud-form';
 import Table from './Table';
-
 function Form() {
+    const [user,setUser] = useState({
+        languages:[]
+    })
     const [users,setUsers] = useState([])
-    const [user,setUser] = useState({})
+    const [update,setUpdate] = useState(null)
+    // user.languages = []
+    
     const change=(event)=>{
         const {name , value}=event.target;
-        setUser({...user,
-            [name] : value
-        })
-        // setCk(true)
+        const checked = event.target.checked
+        if(name ==='languages'){
+
+            if(checked){
+                setUser({...user,
+                    languages : [...user.languages,value]
+                })
+            }
+            else{
+                // user.languages.splice(user.languages.indexOf(value),1)
+                const user1 =  user.languages.filter((i)=> i!==value)
+                setUser({...user,
+                    languages : user1
+                })
+            }
+        }else{
+            setUser({...user,
+                [name] : value
+            })
+        }
+            
     }
+    console.log("user.languages",user.languages);
     const get = (event) => {
         event.preventDefault()
-        setUsers([...users,user])
-        setUser({})
+        if(update !== null){
+            users.splice(update,1,user)
+            // console.log(users.splice(update,1,user));
+            setUsers([...users])
+            setUser({languages:[]})
+            setUpdate(null)
+            console.log("22",users);
+        }else{
+            setUsers([...users,user])
+            setUser({languages:[]})
+        }
     }
-    // console.log("users",users);
-    // console.log('user',user.name);
-  return (
+    const delet=(i) =>{
+        users.splice(i,1)
+        setUsers([...users]); console.log("33",users);
+    }
+    const edit=(i)=>{
+            console.log("55",users);
+       const userssss= users.find((z,index)=>index===i)
+        // console.log(props.users.find((_,index)=>index===i));
+        setUser(userssss)
+        setUpdate(i);
+        console.log("44",users);
+    }
+    return (
     <>
-        <form onSubmit={get} id='form'>
-            <label>name : </label>
-            <input type="text" name='name' value={user.name || ''} onChange={change}/><br/>
-            <label>email : </label>
-            <input type="text" name='email' value={user.email || ''} onChange={change}/><br />
-            <label>password : </label>
-            <input type="password" name='password' value={user.password || ''} onChange={change}/><br />
-            <label>age : </label>
-            <input type="text" name='age' value={user.age || ''} onChange={change}/><br />
-            <label>date : </label>
-            <input type="date" name='date' value={user.date || ''} onChange={change}/><br />
-            <label>number : </label>
-            <input type='number' name='number' value={user.number || ''} onChange={change}/><br />
-            <label>color : </label>
-            <input type='color' name='color' value={user.color || ''} onChange={change}/><br />
-            <label>who are you : </label>
-            <select name='post' value={user.post || ''} onChange={change}>
-                <option>student</option>
-                <option>employee</option>
-                <option>other</option>
-            </select><br />
-            <label>gender : </label>
-            <input name='gender' type={'radio'} onChange={change} checked={user.gender==='male'} value={ 'male' }/><label>male</label>
-            <input name='gender' type={'radio'} onChange={change} checked={user.gender==='female'} value={ 'female' }/><label>female</label>
-            <input name='gender' type={'radio'} onChange={change} checked={user.gender==='other'}  value={ 'other' }/><label>other</label><br />
-            <label>languages : </label>
-            <input name='languages' type={'checkbox'}  onChange={change} checked={user.languages==='gujarati'} value='gujarati'/><label>gujarati</label>
-            <input name='languages1' type={'checkbox'} onChange={change} checked={user.languages1==='english'} value='english'/><label>english</label>
-            <input name='languages2' type={'checkbox'} onChange={change} checked={user.languages2==='hindi'} value='hindi'/><label>hindi</label><br />
-            <button type='submit'>submit</button>
-
-        </form>
-            <Table users={users}/>
+            <Crudform get={get} user={user} change={change}  />
+            <Table users={users}  delet={delet} edit={edit}/>
     </>
     )
     
